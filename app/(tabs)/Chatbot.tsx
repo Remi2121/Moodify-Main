@@ -6,37 +6,47 @@ export default function Chat_Bot() {
   const [topic, setTopic] = useState('');
   const [tips, setTips] = useState('');
   const [question, setQuestion] = useState('How are you feeling today?');
-  const [loading, setLoading] = useState(false);  // <-- NEW
+  const [loading, setLoading] = useState(false);
 
   const getTips = async () => {
-  setLoading(true);
-  setTips('');
-  try {
-    const res = await fetch('http://192.168.219.146:8000/get_tips', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic })
-    });
-    
-    const text = await res.text();
-    let data;
+    setLoading(true);
+    setTips('');
     try {
-      data = JSON.parse(text);
+      const res = await fetch('http://192.168.234.146:8000/get_tips', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic })
+      });
+
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        console.error('JSON parse error:', err, 'Raw response:', text);
+        setTips('Server returned invalid JSON.');
+        setLoading(false);
+        return;
+      }
+
+      
+      if (typeof data.tips === 'string') {
+        const tipsArray = data.tips.split(/\d+\.\s/); 
+        tipsArray.shift(); 
+        const numberedTips = tipsArray
+          .map((tip: string, index: number) => `${index + 1}. ${tip.trim()}`)
+          .join('\n\n'); 
+
+        setTips(numberedTips);
+      } else {
+        setTips('No tips available.');
+      }
     } catch (err) {
-      console.error('JSON parse error:', err, 'Raw response:', text);
-      setTips('Server returned invalid JSON.');
-      setLoading(false);
-      return;
+      console.error(err);
+      setTips('Error fetching tips.');
     }
-
-    setTips(data.tips);
-  } catch (err) {
-    console.error(err);
-    setTips('Error fetching tips.');
-  }
-  setLoading(false);
-};
-
+    setLoading(false);
+  };
 
   return (
     <LinearGradient colors={['#0d0b2f', '#2a1faa']} style={styles.gradient}>
@@ -50,7 +60,7 @@ export default function Chat_Bot() {
           placeholderTextColor="white"
         />
         <Button title="Get Tips" onPress={getTips} />
-        
+
         {loading ? (
           <ActivityIndicator size="large" color="#ffffff" style={{ marginTop: 20 }} />
         ) : (
