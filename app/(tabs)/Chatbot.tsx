@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import Lottie from 'lottie-react-native'
 
 export default function Chat_Bot() {
   const [topic, setTopic] = useState('');
   const [tips, setTips] = useState('');
-  const [question, setQuestion] = useState('How are you feeling today?');
+  const [question] = useState('How are you feeling today?');
   const [loading, setLoading] = useState(false);
 
   const getTips = async () => {
@@ -29,13 +30,12 @@ export default function Chat_Bot() {
         return;
       }
 
-      
       if (typeof data.tips === 'string') {
-        const tipsArray = data.tips.split(/\d+\.\s/); 
-        tipsArray.shift(); 
+        const tipsArray = data.tips.split(/\d+\.\s/);
+        tipsArray.shift();
         const numberedTips = tipsArray
           .map((tip: string, index: number) => `${index + 1}. ${tip.trim()}`)
-          .join('\n\n'); 
+          .join('\n\n');
 
         setTips(numberedTips);
       } else {
@@ -50,7 +50,11 @@ export default function Chat_Bot() {
 
   return (
     <LinearGradient colors={['#0d0b2f', '#2a1faa']} style={styles.gradient}>
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+        <Text style={styles.header}>Your AI Meditation Doctor</Text>
+        <Lottie source={require('../../assets/animation/doctoranimation.json')} 
+        autoPlay loop 
+        style={{ height: 200 }} />
         <Text style={styles.question}>{question}</Text>
         <TextInput
           style={styles.input}
@@ -60,21 +64,30 @@ export default function Chat_Bot() {
           placeholderTextColor="white"
         />
         <Button title="Get Tips" onPress={getTips} />
-
         {loading ? (
           <ActivityIndicator size="large" color="#ffffff" style={{ marginTop: 20 }} />
         ) : (
           <Text style={styles.tips}>{tips}</Text>
         )}
-      </View>
+      </ScrollView>
     </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   gradient: { flex: 1 },
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  question: { fontSize: 18, marginBottom: 10, fontWeight: 'bold', color: 'white' },
+  scrollContainer: {
+    padding: 20,
+    paddingBottom: 40,
+    flexGrow: 1,
+    justifyContent: 'center'
+  },
+  question: { 
+    fontSize: 18, 
+    marginBottom: 10, 
+    fontWeight: 'bold', 
+    color: 'white' 
+  },
   input: {
     borderWidth: 1,
     marginBottom: 10,
@@ -82,5 +95,17 @@ const styles = StyleSheet.create({
     color: 'white',
     borderColor: 'white'
   },
-  tips: { marginTop: 20, fontSize: 16, color: 'white' }
+  tips: {
+    marginTop: 20,
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'justify'
+  },
+  header:{
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'lightblue',
+    marginBottom: 20
+
+  }
 });
