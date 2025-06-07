@@ -1,15 +1,7 @@
+// app/Profile.tsx
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import ProfileSidebar from '../ProfilePage/ProfileSideBar/ProfileSidebar';
 
-export default function Profile() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Profile Screen</Text>
-    </View>
-  );
+export default function ProfilePage() {
+  return <ProfileSidebar />;
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  text: { fontSize: 20, fontWeight: 'bold' },
-});
