@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Lottie from 'lottie-react-native'
+import Lottie from 'lottie-react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, Button, Image, ScrollView, StyleSheet, Text, TextInput } from 'react-native';
 
 export default function Chat_Bot() {
   const [topic, setTopic] = useState('');
@@ -13,7 +13,7 @@ export default function Chat_Bot() {
     setLoading(true);
     setTips('');
     try {
-      const res = await fetch('http://192.168.234.146:8000/get_tips', {
+      const res = await fetch('http://192.168.64.146:8000/get_tips', {  // Updated IP Address
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic })
@@ -39,7 +39,7 @@ export default function Chat_Bot() {
 
         setTips(numberedTips);
       } else {
-        setTips('No tips available.');
+        setTips('This is not a mental health related concept.');
       }
     } catch (err) {
       console.error(err);
@@ -50,6 +50,7 @@ export default function Chat_Bot() {
 
   return (
     <LinearGradient colors={['#0d0b2f', '#2a1faa']} style={styles.gradient}>
+       <Image source={require('../../assets/images/bg.png')} style={styles.bgImage} />
       <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
         <Text style={styles.header}>Your AI Meditation Doctor</Text>
         <Lottie source={require('../../assets/animation/doctoranimation.json')} 
@@ -106,6 +107,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'lightblue',
     marginBottom: 20
-
+  },
+  bgImage: {
+    position: 'absolute',
+    width: '100%',
+    height: '50%',
   }
 });
