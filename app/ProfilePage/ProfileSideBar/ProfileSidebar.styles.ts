@@ -21,11 +21,48 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 10,
   },
+  closeButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    padding: 8,
+    zIndex: 10,
+  },
+  closeIcon: {
+    color: 'white',
+    fontSize: 24,
+  },
+  tooltipContainer: {
+    alignSelf: 'center',
+    backgroundColor: '#383879',
+    borderRadius: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    marginBottom: 12,
+    position: 'relative',
+  },
+  tooltipText: {
+    color: 'white',
+    fontSize: 13,
+    fontWeight: '500',
+    minWidth: 100,
+  },
+  tooltipPointer: {
+    width: 0,
+    height: 0,
+    alignSelf: 'center',
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
+    borderBottomWidth: 6,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: '#383879',
+    marginTop: 2,
+  },
   profileHeader: {
     alignItems: 'center',
     marginTop: 20,
-    marginBottom: 100,
-  
+    marginBottom: 30,
   },
   avatarWrapper: {
     position: 'relative',
@@ -37,7 +74,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     borderWidth: 3,
     borderColor: '#fff',
-    backgroundColor: '#444', // fallback if image fails
+    backgroundColor: '#444',
   },
   addButton: {
     position: 'absolute',
@@ -65,32 +102,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     maxWidth: '100%',
   },
-  tooltipContainer: {
-    alignSelf: 'center',
-    backgroundColor: '#383879',
-    borderRadius: 10,
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    marginBottom: 8,
-  },
-  tooltipText: {
-    color: 'white',
-    fontSize: 13,
-    fontWeight: '500',
-    minWidth: 100,
-  },
-  tooltipPointer: {
-    width: 0,
-    height: 0,
-    alignSelf: 'center',
-    borderLeftWidth: 6,
-    borderRightWidth: 6,
-    borderBottomWidth: 6,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: '#383879',
-    marginTop: -1,
-  },
   menuItem: {
     marginVertical: 10,
     backgroundColor: '#292662',
@@ -111,17 +122,6 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: '#007bff',
     borderRadius: 24,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
-    padding: 8,
-    zIndex: 10,
-  },
-  closeIcon: {
-    color: 'white',
-    fontSize: 24,
   },
 });
 
