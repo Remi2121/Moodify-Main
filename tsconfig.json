@@ -1,7 +1,8 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "module": "esnext",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "target": "esnext",
     "lib": ["esnext", "dom"],
     "jsx": "react-native",
@@ -10,6 +11,7 @@
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
+    "baseUrl": ".",
     "paths": {"@/*": ["./*"] },
     "types": ["expo", "expo-router"]
   },

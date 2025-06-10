@@ -1,99 +1,110 @@
-import { Text, View,TouchableOpacity,StyleSheet } from "react-native";
-import{useRouter} from 'expo-router';
-import * as Speech from 'expo-speech';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 
-
-export default function Home() {
+export default function HomeScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams();
 
-  const mood='Anxious';
-  const confidence='78%';
+  const mood = typeof params.mood === 'string' ? params.mood : null;
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 18) return "Good Afternoon";
+    return "Good Evening";
+  };
+
+  const moodSummary = mood ? `You seem ${mood.toLowerCase()}` : `Let's check your mood`;
 
   return (
-   <View style={styles.container}>
+    <View style={styles.container}>
+      <Text style={styles.greeting}>{getGreeting()},</Text>
+      <Text style={styles.username}>User! 👋</Text>
+      <Text style={styles.subtitle}>{moodSummary}</Text>
 
-    {/*Greeting*/}
-    <Text style={styles.greeting}>👋 Hello, User!</Text>
+      <TouchableOpacity style={styles.mainButton} onPress={() => router.push('/MoodDetection')}>
+        <Text style={styles.icon}>🎭</Text>
+        <Text style={styles.mainText}>Detect Mood</Text>
+      </TouchableOpacity>
 
-    <TouchableOpacity style={styles.button} onPress={() => router.push('/MoodDetection')}>
-  <Text style={styles.buttonText}>📷  Scan Mood</Text>
-</TouchableOpacity>
+      <View style={styles.grid}>
+        <TouchableOpacity style={styles.tile} onPress={() => router.push('/explore')}>
+          <Text style={styles.icon}>🎵</Text>
+          <Text style={styles.tileText}>Music</Text>
+        </TouchableOpacity>
 
+        <TouchableOpacity style={styles.tile} onPress={() => router.push('/explore')}>
+          <Text style={styles.icon}>🧘</Text>
+          <Text style={styles.tileText}>Meditation</Text>
+        </TouchableOpacity>
 
-    <TouchableOpacity style={styles.button} onPress={() => Speech.speak("How are you feeling today?")}>
-  <Text style={styles.buttonText}>🎙 Speak Your Mood</Text>    
-</TouchableOpacity>
-
-
-      {/*Mood Result display*/}
-      <View style={styles.resultContainer}>
-        <Text style={styles.resultEmoji}>😟</Text>
-        <Text style={styles.resultText}>Your mood is: {mood}</Text>
-        <Text style={styles.resultText}>Confidence: {confidence}</Text>
+        <TouchableOpacity style={styles.tile} onPress={() => router.push('/Journal')}>
+          <Text style={styles.icon}>📘</Text>
+          <Text style={styles.tileText}>Mood Journal</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.tile} onPress={() => router.push('/explore')}>
+          <Text style={styles.icon}>📈</Text>
+          <Text style={styles.tileText}>Mood Trends</Text>
+        </TouchableOpacity>
       </View>
-
-      {/*Quick Action Buttons*/}
-      <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/explore')}>
-        <Text style={styles.buttonText}>🎵 Show Music for Me</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/Journal')}>
-        <Text style={styles.buttonText}>📖 Log This in Journal</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/Chatbot')}>
-        <Text style={styles.buttonText}>💬 Talk to Chatbot</Text>
-      </TouchableOpacity>
-
-   </View>
+    </View>
   );
 }
 
-const styles= StyleSheet.create({
-  container:{
-    flex:1,
-    paddingTop:80,
-    alignItems:'center',
-    backgroundColor:'#0d0b2f',
-    paddingHorizontal:20,
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 80,
+    paddingHorizontal: 24,
+    backgroundColor: '#0d0b2f',
   },
-
-  greeting:{
+  greeting: {
     color: '#fff',
+    fontSize: 40,
+    fontWeight: '600',
+  },
+  username: {
+    color: '#fff',
+    fontSize: 30,
+    marginBottom: 6,
+  },
+  subtitle: {
+    color: '#A8B5DB',
     fontSize: 20,
     marginBottom: 30,
   },
-
-  button:{
+  mainButton: {
     backgroundColor: '#2a1faa',
-    padding: 15,
+    padding: 24,
     borderRadius: 20,
-    marginVertical: 10,
-    width: '100%',
-    alignItems: 'center',
-  },
-  buttonText:{
-    color: '#fff',
-    fontSize: 16,
-  },
-  resultContainer:{
-    marginTop: 20,
     alignItems: 'center',
     marginBottom: 20,
   },
-  resultEmoji:{
-    fontSize: 50,
+  mainText: {
+    color: '#fff',
+    fontSize: 18,
+    marginTop: 10,
   },
-  resultText:{
-    fontSize: 14,
-    color: '#cccccc',
+  icon: {
+    fontSize: 60,
+    color: '#fff',
   },
-  actionButton:{
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  tile: {
     backgroundColor: '#1f1b5a',
-    padding: 12,
+    width: '48%',
+    padding: 20,
     borderRadius: 15,
-    marginVertical: 6,
-    width: '100%',
     alignItems: 'center',
+    marginBottom: 16,
   },
-})
+  tileText: {
+    color: '#fff',
+    marginTop: 8,
+    fontSize: 14,
+  },
+});

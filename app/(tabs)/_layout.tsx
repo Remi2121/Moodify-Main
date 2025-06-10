@@ -3,10 +3,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { ImageBackground, StyleSheet, View } from 'react-native';
-import highlate from '../../assets/images/highlate.png'; // Corrected relative path
+import highlate from '../../assets/images/highlate.png';
+
+// Define types for TabIcon props
+interface TabIconProps {
+  focused: boolean;
+  icon: string;
+}
 
 // Custom tab icon with highlight background
-const TabIcon = ({ focused, icon }: any) => {
+const TabIcon: React.FC<TabIconProps> = ({ focused, icon }) => {
   if (focused) {
     return (
       <ImageBackground
@@ -14,13 +20,13 @@ const TabIcon = ({ focused, icon }: any) => {
         style={styles.tabIconContainer}
         resizeMode="stretch"
       >
-        <Ionicons name={icon} size={24} color="#ffffff" />
+        <Ionicons name={icon as any} size={24} color="#ffffff" />
       </ImageBackground>
     );
   }
   return (
     <View style={styles.tabIconDefault}>
-      <Ionicons name={icon} size={24} color="#A8B5DB" />
+      <Ionicons name={icon as any} size={24} color="#A8B5DB" />
     </View>
   );
 };
@@ -28,7 +34,7 @@ const TabIcon = ({ focused, icon }: any) => {
 export default function Layout() {
   return (
     <Tabs
-      screenOptions={({ route }) => ({
+      screenOptions={({ route }: { route: { name: string } }) => ({
         tabBarActiveTintColor: '#ffffff',
         tabBarInactiveTintColor: '#cccccc',
         tabBarLabelStyle: { fontSize: 12 },
@@ -45,7 +51,7 @@ export default function Layout() {
             style={StyleSheet.absoluteFill}
           />
         ),
-        tabBarIcon: ({ focused }) => {
+        tabBarIcon: ({ focused }: { focused: boolean }) => {
           let iconName: string;
 
           switch (route.name) {
@@ -61,7 +67,7 @@ export default function Layout() {
             case 'Journal':
               iconName ='book';
               break;
-            case 'Explore':
+            case 'explore':
               iconName = 'musical-notes';
               break;
             default:
@@ -75,25 +81,25 @@ export default function Layout() {
     >
       {/* Visible Tabs */}
       <Tabs.Screen name="index" />
-      <Tabs.Screen name="Explore" />
+      <Tabs.Screen name="explore" />
       <Tabs.Screen name="Chatbot" />
-       <Tabs.Screen name="Journal" />
+      <Tabs.Screen name="Journal" />
       <Tabs.Screen name="Profile" />
      
-
       {/* Hidden Screens */}
       <Tabs.Screen name="MoodDetection" options={{ href: null }} />
       <Tabs.Screen name="Meditation" options={{ href: null }} />
       <Tabs.Screen name="Trends" options={{ href: null }} />
       <Tabs.Screen name="Recommendations" options={{ href: null }} />
-
+      <Tabs.Screen name="MoodResult" options={{ href: null }} />
+      <Tabs.Screen name="RecommendList" options={{ href: null }} />
     </Tabs>
   );
 }
 
 const styles = StyleSheet.create({
   tabIconContainer: {
-   flexDirection: 'row',       
+    flexDirection: 'row',       
     width: '100%',              
     flex: 1,                    
     minWidth: 100,              
