@@ -32,7 +32,7 @@ export default function MoodResult() {
             <Text style={styles.confidenceText}>Confidence: {confidence}</Text>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={() => router.push({pathname:'/RecommendList',params:{mood}})}>
+                <TouchableOpacity style={styles.button} onPress={() => router.push({pathname:'/',params:{mood}})}>
                     <Text style={styles.buttonText}>     Confirm     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => router.replace('/')}>
